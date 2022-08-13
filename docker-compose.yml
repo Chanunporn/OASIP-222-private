@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+    db:
+        image: mysql
+        restart: always
+        volumes:
+            - ./Database/script:/docker-entrypoint-initdb.d/
+            - ./Database/my.cnf:/etc/my.cnf
+            - type: bind
+              source: ../data/
+              target: /var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'sj63noodle'
+            MYSQL_DATABASE: 'oasip'
+    backend:
+        image: chanunporn/backend
+        # build: ./Backend/sj1
+        restart: always
+        depends_on:
+            - 'db'
+        links:
+            - 'db' 
+    frontend:
+        image: chanunporn/frontend
+        # build: ./fontend-sj1
+        restart: always
+        depends_on:
+            - 'backend'
+    proxy:
+        image: nginx
+        restart: always
+        depends_on:
+            - 'frontend'
+            - 'backend'
+            - 'db'
+        ports:
+            - '80:80'
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf

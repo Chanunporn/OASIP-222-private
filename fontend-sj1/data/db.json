@@ -1,0 +1,51 @@
+{
+  "eventList": [
+    {
+      "bookingName": "jakarin",
+      "bookingEmail": "jakarin.b",
+      "eventCategoryId": {
+        "id": 2,
+        "eventCategoryName": "DevOps/Infra Clinic",
+        "eventDuration": 20,
+        "eventCategoryDescription": "Use this event category for DevOps/Infra clinic."
+      },
+      "eventStartDate": "2024-05-01",
+      "eventStartTime": "02:15",
+      "eventDuration": 20,
+      "eventNotes": "aa",
+      "id": 1
+    }
+  ],
+  "eventCatagory": [
+    {
+      "id": 1,
+      "eventCategoryName": "Project Management Clinic",
+      "eventDuration": 30,
+      "eventCategoryDescription": "ตารางนัดหมายนี้ใช้สําหรับนัดหมาย project management clinic ในวิชา INT221 integrated project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคําปรึกษา"
+    },
+    {
+      "id": 2,
+      "eventCategoryName": "DevOps/Infra Clinic",
+      "eventDuration": 20,
+      "eventCategoryDescription": "Use this event category for DevOps/Infra clinic."
+    },
+    {
+      "id": 3,
+      "eventCategoryName": "Database Clinic",
+      "eventDuration": 15,
+      "eventCategoryDescription": "ตารางนัดหมายนี้ใช้สําหรับนัดหมาย database clinic ในวิชา INT221 integrated project I"
+    },
+    {
+      "id": 4,
+      "eventCategoryName": "Client-side Clinic",
+      "eventDuration": 30,
+      "eventCategoryDescription": "ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ในวิชา INT221 integrated project I"
+    },
+    {
+      "id": 5,
+      "eventCategoryName": "Server-side Clinic",
+      "eventDuration": 30,
+      "eventCategoryDescription": null
+    }
+  ]
+}
