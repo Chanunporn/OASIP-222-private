@@ -25,9 +25,18 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Modifying
     @Transactional
     @Query(
-            value = "select * from events where ((:start between events.eventStartTime and (addtime(events.eventStartTime,concat('00:',events.eventDuration,':00')))) or ( :end between events.eventStartTime and (addtime(eventStartTime,concat('00:',events.eventDuration,':00'))) )or (events.eventStartTime between :start and :end) or ((addtime(events.eventStartTime,concat('00:',events.eventDuration,':00'))) between :start and :end))  and events.eventCategoryId = :id and events.eventId <> :eid ",
+            value = "select * from events where ((:start between events.eventStartTime and (addtime(events.eventStartTime,concat('00:',events.eventDuration,':00')))) or ( :end between events.eventStartTime and (addtime(eventStartTime,concat('00:',events.eventDuration,':00'))) )or (events.eventStartTime between :start and :end) or ((addtime(events.eventStartTime,concat('00:',events.eventDuration,':00'))) between :start and :end))  and events.eventCategoryId = :id and events.eventId <> :eid",
             nativeQuery = true
     )
     List<Event> findByEventStartTimeBetweenAndIdNot(@Param("start") Instant start, @Param("end") Instant end, @Param("id") Eventcategory id,@Param("eid") Integer eid);
+
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+            value="update events set events.currentDateTime = now() where events.eventId = :id",
+            nativeQuery = true
+    )
+    void updateCurrentDateTime(@Param("id") int id);
 
 }

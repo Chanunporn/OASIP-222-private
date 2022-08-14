@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class EventService {
+
     @Autowired
     private EventRepository repository;
     @Autowired
@@ -42,6 +43,7 @@ public class EventService {
     private Event mapEventEdit(Event existingEvent, EventEditDTO updateEvent){
         existingEvent.setEventNotes(updateEvent.getEventNotes());
         existingEvent.setEventStartTime(updateEvent.getEventStartTime());
+        existingEvent.setCurrentDateTime(Instant.now());
         return existingEvent;
     }
 
@@ -53,6 +55,7 @@ public class EventService {
         if(addEvent.getEventDuration() != null)e.setEventDuration(addEvent.getEventDuration());
         if(addEvent.getEventNotes() != null)e.setEventNotes(addEvent.getEventNotes());
         if(addEvent.getEventCategoryId() != null)e.setEventCategoryId(categoryRepository.findById(addEvent.getEventCategoryId()).get());
+        e.setCurrentDateTime(Instant.now());
         return e;
     }
 
@@ -78,8 +81,6 @@ public class EventService {
             return false;
         }
     }
-
-
 
     public Boolean checkValidateEmail(String email){
         String regexPattern = "^([a-zA-Z0-9._-])+@\\w+([a-zA-Z0-9._-])*(\\.[a-zA-Z0-9_-]{2,10})+$";
@@ -130,7 +131,16 @@ public class EventService {
     public ResponseEntity save(EventAddDTO event,HttpServletRequest request){
         Event newEvent = convertDTOToEntity(event);
         if(getResponseEntity(newEvent)){
-            return ResponseEntity.status(201).body(modelMapper.map(repository.saveAndFlush(newEvent),EventAddDTO.class));
+            repository.saveAndFlush(newEvent);
+            System.out.println(newEvent.getId());
+            repository.updateCurrentDateTime(newEvent.getId());
+            return ResponseEntity.status(201)
+                    .body(modelMapper.map(
+                            newEvent,EventAddDTO.class));
+//            repository.save(newEvent);
+//            repository.insertCurrentDateTime(newEvent.getId());
+//            return ResponseEntity.status(201).body(modelMapper.map(repository.saveAndFlush(newEvent),EventAddDTO.class));
+
         }else{
             return errorResponse(request,HttpStatus.BAD_REQUEST);
         }
@@ -139,6 +149,7 @@ public class EventService {
     public ResponseEntity edit(EventEditDTO updateEvent,Integer eventId,HttpServletRequest request){
         Event event = repository.findById(eventId).map(e -> mapEventEdit(e,updateEvent)).get();
         if(getResponseEntity(event)){
+            repository.updateCurrentDateTime(eventId);
             return ResponseEntity.status(200).body(modelMapper.map(repository.saveAndFlush(event),EventEditDTO.class));
         }else{
             return errorResponse(request,HttpStatus.BAD_REQUEST);

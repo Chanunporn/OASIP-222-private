@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sit.int221.sj1.dtos.EventAddDTO;
 import sit.int221.sj1.dtos.EventDTO;
 import sit.int221.sj1.dtos.EventEditDTO;
+import sit.int221.sj1.repositories.EventRepository;
 import sit.int221.sj1.services.EventService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +23,11 @@ public class EventController {
     @Autowired
     private EventService service;
 
+
     @GetMapping("")
     public List<EventDTO> getAllEvent() {
         return service.getAllEvents();
+
     }
 
     @GetMapping("/{eventId}")
